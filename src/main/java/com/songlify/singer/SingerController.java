@@ -1,9 +1,8 @@
 package com.songlify.singer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,9 +16,32 @@ public class SingerController {
         this.singerService = singerService;
     }
 
-    @GetMapping
-    public List<Singer> getSingers(){
+    @GetMapping()
+    public List<Singer> getSingers(@RequestParam(required = false)String name,
+                                   @RequestParam(required = false)String genre,
+                                   @RequestParam(required = false)String country){
+        if (name!=null){
+            return singerService.getSingersByName(name);
+        }
+        if(genre!=null){
+            return singerService.getSingersInGenre(genre);
+        }
+        if(country!=null){
+            return singerService.getSingersByCountry(country);
+        }
+
         return singerService.getSingers();
     }
-}
 
+    @PostMapping
+    public Singer createSinger(@RequestBody Singer singer){
+        singerService.addSinger(singer);
+        return singer;
+    }
+
+    @DeleteMapping(path = "{singerId}")
+    public String deleteSinger(@PathVariable int singerId){
+        singerService.deleteSinger(singerId);
+        return "Singer Delete";
+    }
+}

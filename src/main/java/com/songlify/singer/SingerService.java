@@ -21,7 +21,7 @@ public class SingerService {
 
     public List<Singer> getSingersInGenre(String genre){
         return singerRepository.findAll().stream()
-                .filter(singer -> genre.equals(singer.getGenre()))
+                .filter(singer -> genre.equalsIgnoreCase(singer.getGenre()))
                 .collect(Collectors.toList());
     }
 
@@ -36,9 +36,8 @@ public class SingerService {
                 .filter(singer -> singer.getCountry().toLowerCase().contains(searchCountry.toLowerCase()))
                 .collect(Collectors.toList());
     }
-    public Singer addSinger(Singer singer){
+    public void addSinger(Singer singer){
         singerRepository.save(singer);
-        return singer;
     }
 
     @Transactional
