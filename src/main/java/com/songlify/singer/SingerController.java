@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(path = "api/v1/singers")
 public class SingerController {
     private final SingerService singerService;
-
+// new code
     @Autowired
     public SingerController(SingerService singerService){
         this.singerService = singerService;
