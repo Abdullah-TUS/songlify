@@ -1,5 +1,6 @@
 package com.songlify.services;
 
+import com.songlify.dto.singer.SingerUpdateDto;
 import com.songlify.models.Singer;
 import com.songlify.repositories.SingerRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +24,7 @@ public class SingerService {
         return singerRepository.findAll();
     }
 
-    public Optional<Singer> getSinger(long singerId) {
+    public Optional<Singer> getSinger(int singerId) {
         return singerRepository.findById(singerId);
     }
 
@@ -41,8 +42,12 @@ public class SingerService {
         return singerRepository.save(singer);
     }
 
+    public Singer updateSinger(SingerUpdateDto singer) {
+        singerRepository.findById();
+    }
+
     @Transactional
-    public void deleteSinger(long singerId) {
+    public void deleteSinger(int singerId) {
         singerRepository.deleteById(singerId);
     }
 }

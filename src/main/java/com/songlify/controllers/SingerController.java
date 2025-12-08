@@ -22,7 +22,7 @@ public class SingerController {
     }
 
     @GetMapping(path = "/{singerId}")
-    public ResponseEntity<Singer> getSinger(@PathVariable long singerId) {
+    public ResponseEntity<Singer> getSinger(@PathVariable int singerId) {
         Optional<Singer> singer = singerService.getSinger(singerId);
         return singer.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,7 +51,7 @@ public class SingerController {
     }
 
     @DeleteMapping("/{singerId}")
-    public ResponseEntity<Void> deleteSinger(@PathVariable long singerId) {
+    public ResponseEntity<Void> deleteSinger(@PathVariable int singerId) {
         singerService.deleteSinger(singerId);
         return ResponseEntity.noContent().build();
     }
