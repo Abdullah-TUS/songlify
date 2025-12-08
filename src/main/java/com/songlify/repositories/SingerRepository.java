@@ -13,8 +13,10 @@ public interface SingerRepository extends JpaRepository<Singer, Integer> {
 
     boolean existsByName(String name);
 
+
     List<Singer> findByGenreIgnoreCase(String genre);
 
     List<Singer> findByCountryContainingIgnoreCase(String country);
+
 }
 

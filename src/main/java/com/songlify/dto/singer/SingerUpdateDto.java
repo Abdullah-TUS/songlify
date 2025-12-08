@@ -6,7 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SingerUpdateDto {
+    private Integer id;
     private String name;
-    private int listeners;
+    private Integer listeners;
     private String country;
 }

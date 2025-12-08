@@ -28,6 +28,8 @@ public class SingerService {
         return singerRepository.findById(singerId);
     }
 
+
+    // I know. give me some time.
     public List<Singer> searchSinger(String name, String genre, String country) {
         if (name != null) return singerRepository.findByNameContainingIgnoreCase(name);
         if (genre != null) return singerRepository.findByGenreIgnoreCase(genre);
@@ -42,8 +44,14 @@ public class SingerService {
         return singerRepository.save(singer);
     }
 
-    public Singer updateSinger(SingerUpdateDto singer) {
-        singerRepository.findById();
+    public Optional<Singer> updateSinger(SingerUpdateDto dto) {
+        return singerRepository.findById(dto.getId())
+                .map(singer -> {
+                    if (dto.getName() != null) singer.setName(dto.getName());
+                    if (dto.getCountry() != null) singer.setCountry(dto.getCountry());
+                    if (dto.getListeners() != null) singer.setListeners(dto.getListeners());
+                    return singerRepository.save(singer);
+                });
     }
 
     @Transactional

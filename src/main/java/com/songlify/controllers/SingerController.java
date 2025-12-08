@@ -1,5 +1,6 @@
 package com.songlify.controllers;
 
+import com.songlify.dto.singer.SingerUpdateDto;
 import com.songlify.models.Singer;
 import com.songlify.services.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class SingerController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
+    @GetMapping
     public ResponseEntity<List<Singer>> getSingers(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String genre,
@@ -38,7 +39,7 @@ public class SingerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSinger(@RequestBody Singer singer) {
+    public ResponseEntity<Object> createSinger(@RequestBody Singer singer) {
         Singer created = singerService.addSinger(singer);
 
         if (created == null) {
@@ -55,6 +56,14 @@ public class SingerController {
         singerService.deleteSinger(singerId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping
+    public ResponseEntity<?> patchSinger(@RequestBody SingerUpdateDto dto) {
+        return singerService.updateSinger(dto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 
     public record ErrorResponse(String message) {
     }
