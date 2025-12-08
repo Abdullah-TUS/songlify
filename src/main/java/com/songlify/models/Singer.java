@@ -1,6 +1,7 @@
-package com.songlify.singer;
+package com.songlify.models;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -29,7 +30,8 @@ public class Singer {
     @Column(name = "image_url")
     private String imageUrl;
 
-    public Singer() {}
+    public Singer() {
+    }
 
     public Singer(Long id, String name, String genre, Integer listeners, String country, LocalDate birthdate, String bio, String imageUrl) {
         this.id = id;
