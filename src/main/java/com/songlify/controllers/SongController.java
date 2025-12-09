@@ -1,0 +1,33 @@
+package com.songlify.controllers;
+
+
+import com.songlify.dto.song.SongGetDto;
+import com.songlify.models.Song;
+import com.songlify.services.SongService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "api/v1")
+public class SongController {
+    private final SongService songService;
+
+    public SongController(SongService songService) {
+        this.songService = songService;
+    }
+
+
+    @GetMapping(path = "/singers/{singerId}/songs")
+    public ResponseEntity<List<SongGetDto>> getSongs(@PathVariable int singerId) {
+        return ResponseEntity.ok(songService.getSongs(singerId));
+    }
+
+    @PostMapping(path = "/songs")
+    public ResponseEntity<SongGetDto> addSong(@RequestBody Song song) {
+        SongGetDto createdSong = songService.addSong(song);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
+    }
+}
