@@ -1,6 +1,7 @@
 package com.songlify.services;
 
 import com.songlify.dto.singer.SingerUpdateDto;
+import com.songlify.exceptions.SingerNotFoundException;
 import com.songlify.models.Singer;
 import com.songlify.repositories.SingerRepository;
 import jakarta.transaction.Transactional;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SingerService {
@@ -24,8 +24,9 @@ public class SingerService {
         return singerRepository.findAll();
     }
 
-    public Optional<Singer> getSinger(int singerId) {
-        return singerRepository.findById(singerId);
+    public Singer getSinger(int singerId) {
+        return singerRepository.findById(singerId)
+                .orElseThrow(() -> new SingerNotFoundException("Singer not found with the ID: " + singerId));
     }
 
 
@@ -44,18 +45,22 @@ public class SingerService {
         return singerRepository.save(singer);
     }
 
-    public Optional<Singer> updateSinger(SingerUpdateDto dto) {
+    public Singer updateSinger(SingerUpdateDto dto) {
         return singerRepository.findById(dto.getId())
                 .map(singer -> {
                     if (dto.getName() != null) singer.setName(dto.getName());
                     if (dto.getCountry() != null) singer.setCountry(dto.getCountry());
                     if (dto.getListeners() != null) singer.setListeners(dto.getListeners());
-                    return singerRepository.save(singer);
-                });
+
+                    return singer;
+                }).orElseThrow(() -> new SingerNotFoundException("Singer not found with the ID: " + dto.getId()));
     }
 
     @Transactional
     public void deleteSinger(int singerId) {
+        if (!singerRepository.existsById(singerId)) {
+            throw new SingerNotFoundException("Singer not found with the ID: " + singerId);
+        }
         singerRepository.deleteById(singerId);
     }
 }

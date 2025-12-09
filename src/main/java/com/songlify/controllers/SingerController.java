@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/singers")
@@ -24,9 +23,7 @@ public class SingerController {
 
     @GetMapping(path = "/{singerId}")
     public ResponseEntity<Singer> getSinger(@PathVariable int singerId) {
-        Optional<Singer> singer = singerService.getSinger(singerId);
-        return singer.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok().body(singerService.getSinger(singerId));
     }
 
     @GetMapping
@@ -59,9 +56,7 @@ public class SingerController {
 
     @PatchMapping
     public ResponseEntity<?> patchSinger(@RequestBody SingerUpdateDto dto) {
-        return singerService.updateSinger(dto)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(singerService.updateSinger(dto));
     }
 
 
