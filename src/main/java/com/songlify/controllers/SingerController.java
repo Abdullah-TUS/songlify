@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.songlify.constants.URLs.SINGER.*;
+
 @RestController
-@RequestMapping(path = "api/v1/singers")
+@RequestMapping(BASE_URL)
 public class SingerController {
 
     private final SingerService singerService;
@@ -21,7 +23,7 @@ public class SingerController {
         this.singerService = singerService;
     }
 
-    @GetMapping(path = "/{singerId}")
+    @GetMapping(GET_BY_ID)
     public ResponseEntity<Singer> getSinger(@PathVariable int singerId) {
         return ResponseEntity.ok().body(singerService.getSinger(singerId));
     }
@@ -48,7 +50,7 @@ public class SingerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/{singerId}")
+    @DeleteMapping(GET_BY_ID)
     public ResponseEntity<Void> deleteSinger(@PathVariable int singerId) {
         singerService.deleteSinger(singerId);
         return ResponseEntity.noContent().build();
