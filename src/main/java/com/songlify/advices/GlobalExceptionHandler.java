@@ -1,5 +1,6 @@
 package com.songlify.advices;
 
+import com.songlify.exceptions.AlbumAlreadyExistsException;
 import com.songlify.exceptions.SingerAlreadyExistsException;
 import com.songlify.exceptions.SingerNotFoundException;
 import com.songlify.response.ErrorResponse;
@@ -18,6 +19,7 @@ import java.util.Date;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // PSA some of these have been built with the help of GPT so, sorry.
     /* ------------------ Helper method (avoid repetition) ------------------ */
     private ResponseEntity<ErrorResponse> buildError(
             HttpStatus status,
@@ -46,6 +48,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleSingerAlreadyExists(
             SingerAlreadyExistsException ex, WebRequest req
     ) {
+        return buildError(HttpStatus.CONFLICT, ex.getMessage(), req);
+    }
+
+    @ExceptionHandler(AlbumAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumAlreadyExists(AlbumAlreadyExistsException ex, WebRequest req) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage(), req);
     }
 
