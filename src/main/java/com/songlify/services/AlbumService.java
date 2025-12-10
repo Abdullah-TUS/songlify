@@ -12,6 +12,7 @@ import com.songlify.repositories.SingerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +28,20 @@ public class AlbumService {
 
     }
 
-    public List<AlbumGetDto> getAlbums(int singerId) {
+    public List<AlbumGetDto> getAlbums() {
+        return albumRepository.findAll().stream().map(album -> new AlbumGetDto(
+                album.getId(),
+                album.getTitle(),
+                album.getReleaseDate(),
+                album.getSongList().stream().map(song -> new SongListDto(
+                        song.getId(), song.getTitle(),
+                        song.getDuration()
+                )).toList()
+        )).toList();
+    }
+
+    public List<AlbumGetDto> getSingerAlbums(int singerId) {
+
         Singer singer = singerRepository.findById(singerId)
                 .orElseThrow(() -> new SingerNotFoundException("Singer not found with ID: " + singerId));
 

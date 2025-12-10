@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.songlify.constants.URLs.SONG.*;
+
 @RestController
-@RequestMapping(path = "api/v1")
+@RequestMapping(BASE_URL)
 public class SongController {
     private final SongService songService;
 
@@ -20,7 +22,7 @@ public class SongController {
     }
 
 
-    @GetMapping(path = "/singers/{singerId}/songs")
+    @GetMapping(GET_BY_SINGER)
     public ResponseEntity<List<SongGetDto>> getSongs(@PathVariable int singerId) {
         return ResponseEntity.ok(songService.getSongs(singerId));
     }
@@ -30,9 +32,4 @@ public class SongController {
         SongGetDto createdSong = songService.addSong(song);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }
-
-//    @PatchMapping
-//    public ResponseEntity<Song> patchSong(Song song){
-//
-//    }
 }
