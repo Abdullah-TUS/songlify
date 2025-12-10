@@ -12,6 +12,7 @@ public class SongGetDto {
     private Integer id;
     private String title;
     private Double duration;
-    private Album album;
+    private Integer albumId;
+    private String albumTitle;
 
 }
