@@ -1,9 +1,11 @@
 package com.songlify.dto.albums;
 
 
+import com.songlify.dto.song.SongListDto;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,5 +13,6 @@ import java.util.Date;
 public class AlbumGetDto {
     private Integer id;
     private String title;
-    private Date release_date;
+    private Date releaseDate;
+    private List<SongListDto> songList;
 }

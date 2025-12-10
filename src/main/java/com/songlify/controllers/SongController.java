@@ -30,4 +30,9 @@ public class SongController {
         SongGetDto createdSong = songService.addSong(song);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }
+
+//    @PatchMapping
+//    public ResponseEntity<Song> patchSong(Song song){
+//
+//    }
 }

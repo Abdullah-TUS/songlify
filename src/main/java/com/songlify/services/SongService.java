@@ -36,12 +36,14 @@ public class SongService {
             throw new SingerAlreadyExistsException("Singer not found mate");
         }
         Song tempSong = songRepository.save(song);
-        return new SongGetDto(tempSong.getId(), tempSong.getTitle(), tempSong.getDuration());
+        return new SongGetDto(tempSong.getId(), tempSong.getTitle(), tempSong.getDuration(), tempSong.getAlbum());
     }
 
     public List<SongGetDto> getSongs(int singerId) {
         return songRepository.findAllBySingerId(singerId)
-                .stream().map(song -> new SongGetDto(song.getId(), song.getTitle(), song.getDuration())).toList();
+                .stream()
+                .map(song -> new SongGetDto(song.getId(), song.getTitle(),
+                        song.getDuration(), song.getAlbum())).toList();
     }
 
 }

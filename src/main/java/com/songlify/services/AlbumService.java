@@ -2,6 +2,7 @@ package com.songlify.services;
 
 
 import com.songlify.dto.albums.AlbumGetDto;
+import com.songlify.dto.song.SongListDto;
 import com.songlify.exceptions.AlbumAlreadyExistsException;
 import com.songlify.exceptions.SingerNotFoundException;
 import com.songlify.models.Album;
@@ -27,12 +28,19 @@ public class AlbumService {
     }
 
     public List<AlbumGetDto> getAlbums(int singerId) {
-        Singer singer = singerRepository.findById(singerId).
-                orElseThrow(() -> new SingerNotFoundException("Singer not found with the ID: " + singerId));
-
+        Singer singer = singerRepository.findById(singerId)
+                .orElseThrow(() -> new SingerNotFoundException("Singer not found with ID: " + singerId));
 
         return albumRepository.findBySingerId(singerId).stream()
-                .map(album -> new AlbumGetDto(album.getId(), album.getTitle(), album.getReleaseDate())).toList();
+                .map(album -> new AlbumGetDto(
+                        album.getId(),
+                        album.getTitle(),
+                        album.getReleaseDate(),
+                        album.getSongList().stream()
+                                .map(song -> new SongListDto(song.getId(), song.getTitle(), song.getDuration()))
+                                .toList()
+                ))
+                .toList();
     }
 
     public AlbumGetDto createAlbum(Album album) {
@@ -40,12 +48,21 @@ public class AlbumService {
             throw new IllegalArgumentException("Singer id must be provided");
 
         if (!singerRepository.existsById(album.getSinger().getId()))
-            throw new SingerNotFoundException("Singer not found with the ID:" + album.getSinger().getId());
+            throw new SingerNotFoundException("Singer not found with ID: " + album.getSinger().getId());
 
         if (albumRepository.existsByTitleIgnoreCaseAndSingerId(album.getTitle(), album.getSinger().getId()))
-            throw new AlbumAlreadyExistsException("Album already exists.");
+            throw new AlbumAlreadyExistsException("Album already exists");
 
-        Album dto = albumRepository.save(album);
-        return new AlbumGetDto(dto.getId(), album.getTitle(), album.getReleaseDate());
+        Album saved = albumRepository.save(album);
+
+        return new AlbumGetDto(
+                saved.getId(),
+                saved.getTitle(),
+                saved.getReleaseDate(),
+                saved.getSongList().stream()
+                        .map(song -> new SongListDto(song.getId(), song.getTitle(), song.getDuration()))
+                        .toList()
+        );
     }
+
 }
