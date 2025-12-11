@@ -1,6 +1,7 @@
 package com.songlify.advices;
 
 import com.songlify.exceptions.AlbumAlreadyExistsException;
+import com.songlify.exceptions.AlbumNotFoundException;
 import com.songlify.exceptions.SingerAlreadyExistsException;
 import com.songlify.exceptions.SingerNotFoundException;
 import com.songlify.response.ErrorResponse;
@@ -40,6 +41,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SingerNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleSingerNotFound(
             SingerNotFoundException ex, WebRequest req
+    ) {
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage(), req);
+    }
+
+
+    @ExceptionHandler(AlbumNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAlbumNotFound(
+            AlbumNotFoundException ex, WebRequest req
     ) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage(), req);
     }
@@ -122,6 +131,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex, WebRequest req
     ) {
-        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error. \nDetails: " + ex, req);
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", req);
     }
 }

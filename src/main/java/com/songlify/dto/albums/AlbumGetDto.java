@@ -4,6 +4,7 @@ package com.songlify.dto.albums;
 import com.songlify.dto.song.SongListDto;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,5 +15,5 @@ public class AlbumGetDto {
     private Integer id;
     private String title;
     private Date releaseDate;
-    private List<SongListDto> songList;
+    private List<SongListDto> songList = new ArrayList<>();
 }

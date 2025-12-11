@@ -15,9 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AlbumService {
@@ -77,9 +75,7 @@ public class AlbumService {
                 saved.getId(),
                 saved.getTitle(),
                 saved.getReleaseDate(),
-                saved.getSongList().stream()
-                        .map(song -> new SongListDto(song.getId(), song.getTitle(), song.getDuration()))
-                        .toList()
+                null
         );
     }
 
@@ -92,5 +88,15 @@ public class AlbumService {
             if (dto.getReleaseDate() != null) album.setReleaseDate(dto.getReleaseDate());
             return new AlbumGetDto(album.getId(), album.getTitle(), album.getReleaseDate(), album.getSongList().stream().map(song -> new SongListDto(song.getId(), song.getTitle(), song.getDuration())).toList());
         }).orElseThrow(() -> new AlbumNotFoundException("Album not found."));
+    }
+
+    public void deleteAlbum(int singerId, int albumId) {
+        if (!singerRepository.existsById(singerId))
+            throw new SingerNotFoundException("Couldn't find a singer with the passed id.");
+
+        if (!albumRepository.existsByIdAndSingerId(albumId, singerId))
+            throw new AlbumNotFoundException("Couldn't find an album with the passed id.");
+
+        albumRepository.deleteById(albumId);
     }
 }

@@ -5,6 +5,7 @@ public class URLs {
     public static class ALBUM {
         public static final String BASE_URL = "/api/v1/albums";
         public static final String GET_BY_SINGER = "/singer/{singerId}";
+        public static final String DELETE_SINGER_ALBUM = "singer/{singerId}/album/{albumId}";
     }
 
     public static class SONG {

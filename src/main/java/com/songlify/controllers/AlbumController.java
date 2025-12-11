@@ -41,5 +41,11 @@ public class AlbumController {
     public ResponseEntity<AlbumGetDto> patchAlbum(@RequestBody AlbumPatchDto album) {
         return ResponseEntity.ok().body(albumService.patchAlbum(album));
     }
+
+    @DeleteMapping(DELETE_SINGER_ALBUM)
+    public ResponseEntity deleteAlbum(@PathVariable int singerId, @PathVariable int albumId) {
+        albumService.deleteAlbum(singerId, albumId);
+        return ResponseEntity.noContent().build();
+    }
 }
 

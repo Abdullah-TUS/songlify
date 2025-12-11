@@ -13,4 +13,6 @@ public interface AlbumRepository extends JpaRepository<Album, Integer> {
     boolean existsByTitleIgnoreCaseAndSingerId(String albumTitle, Integer singerId);
 
     List<Album> findBySingerId(Integer singerId);
+
+    boolean existsByIdAndSingerId(Integer albumId, Integer singerId);
 }
