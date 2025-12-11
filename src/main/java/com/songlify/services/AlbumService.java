@@ -2,18 +2,22 @@ package com.songlify.services;
 
 
 import com.songlify.dto.albums.AlbumGetDto;
+import com.songlify.dto.albums.AlbumPatchDto;
 import com.songlify.dto.song.SongListDto;
 import com.songlify.exceptions.AlbumAlreadyExistsException;
+import com.songlify.exceptions.AlbumNotFoundException;
 import com.songlify.exceptions.SingerNotFoundException;
 import com.songlify.models.Album;
 import com.songlify.models.Singer;
 import com.songlify.repositories.AlbumRepository;
 import com.songlify.repositories.SingerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlbumService {
@@ -79,4 +83,14 @@ public class AlbumService {
         );
     }
 
+
+    @Transactional
+    public AlbumGetDto patchAlbum(AlbumPatchDto dto) {
+        return albumRepository.findById(dto.getId()).map(album ->
+        {
+            if (dto.getTitle() != null) album.setTitle(dto.getTitle());
+            if (dto.getReleaseDate() != null) album.setReleaseDate(dto.getReleaseDate());
+            return new AlbumGetDto(album.getId(), album.getTitle(), album.getReleaseDate(), album.getSongList().stream().map(song -> new SongListDto(song.getId(), song.getTitle(), song.getDuration())).toList());
+        }).orElseThrow(() -> new AlbumNotFoundException("Album not found."));
+    }
 }

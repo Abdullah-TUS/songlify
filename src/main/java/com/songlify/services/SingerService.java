@@ -45,6 +45,7 @@ public class SingerService {
         return singerRepository.save(singer);
     }
 
+    @Transactional
     public Singer updateSinger(SingerUpdateDto dto) {
         return singerRepository.findById(dto.getId())
                 .map(singer -> {

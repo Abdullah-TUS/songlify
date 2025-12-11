@@ -122,6 +122,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex, WebRequest req
     ) {
-        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", req);
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error. \nDetails: " + ex, req);
     }
 }

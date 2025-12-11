@@ -27,8 +27,8 @@ public class SongController {
         return ResponseEntity.ok(songService.getSongs(singerId));
     }
 
-    @PostMapping(path = "/songs")
-    public ResponseEntity<SongGetDto> addSong(@RequestBody Song song) {
+    @PostMapping
+    public ResponseEntity<SongGetDto> createSong(@RequestBody Song song) {
         SongGetDto createdSong = songService.addSong(song);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }

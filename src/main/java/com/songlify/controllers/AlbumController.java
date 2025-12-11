@@ -1,6 +1,7 @@
 package com.songlify.controllers;
 
 import com.songlify.dto.albums.AlbumGetDto;
+import com.songlify.dto.albums.AlbumPatchDto;
 import com.songlify.models.Album;
 import com.songlify.services.AlbumService;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,11 @@ public class AlbumController {
     @PostMapping
     public ResponseEntity<AlbumGetDto> createAlbum(@RequestBody Album album) {
         return ResponseEntity.status(HttpStatus.CREATED).body(albumService.createAlbum(album));
+    }
+
+    @PatchMapping
+    public ResponseEntity<AlbumGetDto> patchAlbum(@RequestBody AlbumPatchDto album) {
+        return ResponseEntity.ok().body(albumService.patchAlbum(album));
     }
 }
 
